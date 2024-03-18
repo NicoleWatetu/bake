@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign Up Form</title>
+    <script src="sign.js"></script>
+    <link rel="stylesheet" href="SIGNUP.css">
+</head>
+<body>
+<nav>
+    <ul class="nav-list">
+        <li><a href="TETU.html">HOME</a></li>
+        <li><a href="MENU.html">MENU</a></li>
+        <li><a href="ORDER.html">ORDER</a></li>
+        <li><a href="SIGN UP.html">SIGNUP</a></li>
+    </ul>
+</nav>
+
+<form id="signupForm" action="TETU.html" method="GET">
+    <h2>Sign Up</h2>
+    <div class="container">
+        <div id="error" style="color: red; text-align: center;"> </div>
+        <div class="form-group">
+            <label for="customername">Customer Name:</label>
+            <input type="text" id="name" name="name" >
+            <div id="nameError" style="color: blue;"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age">
+            <div id="ageError" style="color: blue;"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" >
+            <div id="emailError" style="color: blue;"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="phoneNo">Phone Number:</label>
+            <input type="tel" id="phoneNo" name="phoneNo" required>
+            <div id="phoneNoError" style="color: blue;"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <div id="passwordError" style="color: blue;"></div>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword">
+            <div id="confirmPasswordError" style="color: blue;"></div>
+        </div>
+    
+        <div id="signupSuccess" style="display: none; color: green; text-align: center;">Sign up successful!</div>
+    
+        <div>
+            <button type="submit">Sign Up</button>
+        </div>
+    </div>
+</form>
+<script>
+    const form = document.getElementById('signupForm');
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault(); // Prevent form submission for now
+        const name = document.getElementById('name');
+        const email = document.getElementById('email');
+        const age = document.getElementById('age');
+        const phoneNo = document.getElementById('phoneNo');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const namePattern = /^[a-zA-Z]+$/;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        let messages = [];
+
+        if (name.value.trim().length < 3) {
+            messages.push('Name must be at least 3 letters.');
+        } else if (!namePattern.test(name.value.trim())) {
+            messages.push('Name must contain only letters.');
+        } else {
+            document.getElementById('nameError').innerText = ''; // Clear error message
+        }
+
+        if (email.value.trim() === '') {
+            messages.push('Email is required.');
+        } else if (!emailPattern.test(email.value.trim())) {
+            messages.push('Please enter a valid email address.');
+        } else {
+            document.getElementById('emailError').innerText = ''; // Clear error message
+        }
+
+        if (isNaN(age.value) || age.value < 18) {
+            messages.push('You must be over 18 years old to sign up.');
+        } else {
+            document.getElementById('ageError').innerText = ''; // Clear error message
+        }
+
+        if (phoneNo.value.trim().length !== 10) {
+            messages.push('Phone number must have 10 digits.');
+        } else {
+            document.getElementById('phoneNoError').innerText = ''; // Clear error message
+        }
+
+        if (password.value.trim().length < 8) {
+            messages.push('Password must be at least 8 characters long.');
+        }
+
+        // Add more password strength validations as needed...
+
+        if (password.value !== confirmPassword.value) {
+            messages.push('Passwords do not match.');
+        } else {
+            document.getElementById('passwordError').innerText = ''; // Clear error message
+            document.getElementById('confirmPasswordError').innerText = ''; // Clear error message
+        }
+
+        if (messages.length === 0) {
+            // All validations passed, show success message
+            const username = name.value.trim(); // Get username
+            const successMessage = `You (${username}) have successfully signed up.`;
+            alert(successMessage); // Display success message in a dialog box
+            form.reset(); // Clear form fields
+        } else {
+            // Display error messages
+            for (const key in messages) {
+                const errorMessage = messages[key];
+                if (key === 'name') {
+                    document.getElementById('nameError').innerText = errorMessage;
+                } else if (key === 'email') {
+                    document.getElementById('emailError').innerText = errorMessage;
+                } else if (key === 'age') {
+                    document.getElementById('ageError').innerText = errorMessage;
+                } else if (key === 'phoneNo') {
+                    document.getElementById('phoneNoError').innerText = errorMessage;
+                } else if (key === 'password') {
+                    document.getElementById('passwordError').innerText = errorMessage;
+                } else if (key === 'confirmPassword') {
+                    document.getElementById('confirmPasswordError').innerText = errorMessage;
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
